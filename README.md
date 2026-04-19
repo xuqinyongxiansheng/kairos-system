@@ -1,4 +1,4 @@
-#凯洛斯系统
+#鸿蒙小雨 Kairos System
 
 基于 Ollama + Gemma4 的智能集成系统核心，对标 Claude Code 核心架构。
 ###作者的话 
