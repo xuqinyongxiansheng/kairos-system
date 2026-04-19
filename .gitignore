@@ -93,6 +93,7 @@ logs/
 *.bin
 *.gguf
 *.safetensors
+src/kairos/models/gemma4_e4b/sha256-*
 
 # OS files
 .DS_Store
