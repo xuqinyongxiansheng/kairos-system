@@ -3,16 +3,74 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# C extensions
+*.so
+
 # Distribution / packaging
+.Python
 build/
+develop-eggs/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
 *.egg-info/
+.installed.cfg
 *.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
 
 # Environments
 .env
-.venv/
+.venv
+env/
 venv/
+ENV/
+env.bak/
+venv.bak/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
 
 # IDE
 .idea/
@@ -23,6 +81,7 @@ vendor/
 
 # Runtime data
 data/*.json
+data/todos/*.json
 !data/.gitkeep
 !data/todos/.gitkeep
 
@@ -38,19 +97,20 @@ logs/
 # OS files
 .DS_Store
 Thumbs.db
+Desktop.ini
+
+# Build artifacts
+*.zip
+*.tar.gz
 
 # Frontend
 frontend/node_modules/
-frontend/bin/
+frontend/.next/
+frontend/dist/
 frontend/bun.exe
+frontend/bin/
 
-# Test / coverage
-htmlcov/
-.coverage
-.pytest_cache/
-.mypy_cache/
-
-# Temp files
+# Temporary files
 *.tmp
 *.bak
 *.swp
