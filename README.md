@@ -1,14 +1,17 @@
-# Kairos System
+#凯洛斯系统
 
 基于 Ollama + Gemma4 的智能集成系统核心，对标 Claude Code 核心架构。
+###作者的话 
+
+由于作者硬件资源有限，本项目未实施全量测试。很多bug需要复制者在本地使用vibe coding进行修改优化。
 
 ## 项目概述
 
-Kairos System 是一个智能集成系统，集成了本地大模型推理、认知循环、自动化引擎、技能系统、记忆系统等核心模块，支持多通道交互（Web/CLI/微信）。
+Kairos系统是一个智能集成系统，集成了本地大模型推理、认知循环、自动化引擎、技能系统、记忆系统等核心模块，支持多通道交互（Web/CLI/微信）。
 
 ## 核心特性
 
-- **统一 LLM 客户端** - 融合 Ollama/HTTP/本地推理，支持断路器、缓存、模型选择
+- 融合Ollama/HTTP/本地推理，支持断路器、缓存、模型选择
 - **异步认知循环** - 6层认知架构（感知→整合→决策→执行→评估→反馈）
 - **循环协调器** - 统一管理5个自动化循环的生命周期
 - **统一记忆系统** - 工作记忆/长期记忆/情景记忆/语义记忆四层架构
@@ -21,15 +24,15 @@ Kairos System 是一个智能集成系统，集成了本地大模型推理、认
 
 - Python 3.11+
 - FastAPI + Uvicorn
-- Ollama (本地大模型推理)
-- Pydantic v2 (数据验证)
-- httpx (异步HTTP客户端)
-- Prometheus (监控指标)
+-Ollama（本地大模型推理）
+-Pydantic v2（数据验证）
+-httpx（异步HTTP客户端）
+-Prometheus（监控指标）
 
 ## 项目结构
 
 ```
-Kairos System/
+凯洛斯系统/
 ├── src/kairos/           # 源代码
 │   ├── system/           # 核心系统模块
 │   ├── agents/           # 智能体
@@ -57,7 +60,7 @@ Kairos System/
 ### 环境要求
 
 - Python 3.11+
-- Ollama (运行中)
+-Ollama（运行中）
 - 8GB+ RAM
 
 ### 安装
