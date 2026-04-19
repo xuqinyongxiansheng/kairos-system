@@ -1,0 +1,58 @@
+{
+  "short_term": [
+    {
+      "id": "1775995603406",
+      "content": "测试短期记忆 1",
+      "type": "short",
+      "metadata": {
+        "test": true
+      },
+      "created_at": "2026-04-12T20:06:43.406824",
+      "access_count": 4
+    },
+    {
+      "id": "1775995603407",
+      "content": "测试短期记忆 2",
+      "type": "short",
+      "metadata": {},
+      "created_at": "2026-04-12T20:06:43.407779",
+      "access_count": 4
+    },
+    {
+      "id": "1775995618662",
+      "content": "测试短期记忆 1",
+      "type": "short",
+      "metadata": {
+        "test": true
+      },
+      "created_at": "2026-04-12T20:06:58.662276",
+      "access_count": 2
+    },
+    {
+      "id": "1775995618663",
+      "content": "测试短期记忆 2",
+      "type": "short",
+      "metadata": {},
+      "created_at": "2026-04-12T20:06:58.663190",
+      "access_count": 2
+    }
+  ],
+  "long_term": [
+    {
+      "id": "1775995603408",
+      "content": "测试长期记忆",
+      "type": "long",
+      "metadata": {},
+      "created_at": "2026-04-12T20:06:43.408759",
+      "access_count": 2
+    },
+    {
+      "id": "1775995618664",
+      "content": "测试长期记忆",
+      "type": "long",
+      "metadata": {},
+      "created_at": "2026-04-12T20:06:58.664021",
+      "access_count": 1
+    }
+  ]
+}

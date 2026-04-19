@@ -1,0 +1,124 @@
+# 鸿蒙小雨 v4.0.0 生产环境 Docker Compose 配置
+# 包含：API服务 + Ollama模型服务 + 可选监控
+
+version: '3.8'
+
+services:
+  # ==================== 核心API服务 ====================
+  hmyx-api:
+    build:
+      context: .
+      dockerfile: project/Dockerfile
+    container_name: hmyx-api
+    restart: unless-stopped
+    ports:
+      - "${GEMMA4_PORT:-8000}:8000"
+    environment:
+      - GEMMA4_ENV=${GEMMA4_ENV:-production}
+      - GEMMA4_HOST=0.0.0.0
+      - GEMMA4_PORT=8000
+      - GEMMA4_MODEL=${GEMMA4_MODEL:-gemma4:e4b}
+      - GEMMA4_AUTH_ENABLED=${AUTH_ENABLED:-true}
+      - GEMMA4_JWT_SECRET=${JWT_SECRET:-change-me-in-production}
+      - GEMMA4_SIGNATURE_ENABLED=${SIGNATURE_ENABLED:-false}
+      - GEMMA4_SIGNATURE_SECRET=${SIGNATURE_SECRET:-}
+      - GEMMA4_RATE_LIMIT_REQUESTS=${RATE_LIMIT:-100}
+      - OLLAMA_HOST=http://ollama:11434
+    volumes:
+      - hmyx_data:/app/data
+      - hmyx_log:/app/log
+    depends_on:
+      ollama:
+        condition: service_healthy
+    networks:
+      - hmyx-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "2.0"
+        reservations:
+          memory: 512M
+
+  # ==================== Ollama 模型服务 ====================
+  ollama:
+    image: ollama/ollama:latest
+    container_name: hmyx-ollama
+    restart: unless-stopped
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    networks:
+      - hmyx-network
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+          cpus: "4.0"
+
+  # ==================== 可选：Prometheus 监控 ====================
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: hmyx-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=7d'
+    networks:
+      - hmyx-network
+    profiles:
+      - monitoring
+
+  # ==================== 可选：Grafana 可视化 ====================
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: hmyx-grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+    networks:
+      - hmyx-network
+    profiles:
+      - monitoring
+
+networks:
+  hmyx-network:
+    driver: bridge
+
+volumes:
+  hmyx_data:
+    driver: local
+  hmyx_log:
+    driver: local
+  ollama_models:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local

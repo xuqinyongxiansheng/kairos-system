@@ -1,0 +1,57 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Environments
+.env
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+
+# Vendor dependencies
+vendor/
+
+# Runtime data
+data/*.json
+!data/.gitkeep
+!data/todos/.gitkeep
+
+# Logs
+logs/
+*.log
+
+# Model weights
+*.bin
+*.gguf
+*.safetensors
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Frontend
+frontend/node_modules/
+frontend/bin/
+frontend/bun.exe
+
+# Test / coverage
+htmlcov/
+.coverage
+.pytest_cache/
+.mypy_cache/
+
+# Temp files
+*.tmp
+*.bak
+*.swp
+*~

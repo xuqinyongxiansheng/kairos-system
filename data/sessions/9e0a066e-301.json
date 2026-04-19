@@ -1,0 +1,18 @@
+{
+  "id": "9e0a066e-301",
+  "title": "集成测试",
+  "created_at": 1776291972.900291,
+  "updated_at": 1776291972.901021,
+  "messages": [
+    {
+      "id": "74dd6053",
+      "role": "user",
+      "content": "测试消息",
+      "parent_id": null,
+      "timestamp": 1776291972.9010198,
+      "metadata": {}
+    }
+  ],
+  "model": "gemma4:e4b",
+  "metadata": {}
+}

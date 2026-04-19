@@ -1,0 +1,32 @@
+{
+  "synapse_1776002904203_8479f5f1": {
+    "id": "synapse_1776002904203_8479f5f1",
+    "source_id": "neuron_1776002904192_47c932db",
+    "target_id": "neuron_1776002904195_8d44842c",
+    "weight": 1.05,
+    "synapse_type": "excitatory",
+    "delay": 0.001,
+    "plasticity": "LTP",
+    "last_activated": 1776002904.2192879,
+    "activation_count": 1,
+    "strength_history": [
+      1.0,
+      1.05
+    ]
+  },
+  "synapse_1776002904207_df7937d7": {
+    "id": "synapse_1776002904207_df7937d7",
+    "source_id": "neuron_1776002904195_8d44842c",
+    "target_id": "neuron_1776002904199_a9e92c2b",
+    "weight": 1.05,
+    "synapse_type": "excitatory",
+    "delay": 0.001,
+    "plasticity": "LTP",
+    "last_activated": 0.0,
+    "activation_count": 0,
+    "strength_history": [
+      1.0,
+      1.05
+    ]
+  }
+}

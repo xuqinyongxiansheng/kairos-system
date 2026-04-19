@@ -1,0 +1,17 @@
+{
+  "user_id": "default_user",
+  "preferences": {
+    "language_preference": {
+      "preference_type": "language_preference",
+      "value": "chinese",
+      "confidence": 0.6,
+      "source": "interaction_analysis",
+      "last_updated": "2026-04-14T05:41:30.873590"
+    }
+  },
+  "behavior_patterns": {},
+  "decision_history": [],
+  "interaction_count": 3,
+  "correction_count": 0,
+  "last_updated": "2026-04-14T05:41:30.873601"
+}

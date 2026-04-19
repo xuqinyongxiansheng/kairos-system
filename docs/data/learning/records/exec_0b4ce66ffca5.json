@@ -1,0 +1,13 @@
+{
+  "id": "exec_0b4ce66ffca5",
+  "task": "打开浏览器访问百度",
+  "result": "已打开浏览器",
+  "success": true,
+  "duration": 0.0,
+  "tools_used": [
+    "open_browser"
+  ],
+  "errors": [],
+  "feedback": null,
+  "timestamp": "2026-04-13T00:42:42.106588+00:00"
+}

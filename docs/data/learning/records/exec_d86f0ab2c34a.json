@@ -1,0 +1,13 @@
+{
+  "id": "exec_d86f0ab2c34a",
+  "task": "测试任务13",
+  "result": "完成",
+  "success": false,
+  "duration": 0.0,
+  "tools_used": [
+    "test"
+  ],
+  "errors": [],
+  "feedback": null,
+  "timestamp": "2026-04-13T00:42:42.119426+00:00"
+}

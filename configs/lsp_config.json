@@ -1,0 +1,25 @@
+{
+  "lspServers": {
+    "python": {
+      "command": "pylsp",
+      "args": [],
+      "extensions": [".py"],
+      "languages": ["python"],
+      "enabled": true
+    },
+    "typescript": {
+      "command": "typescript-language-server",
+      "args": ["--stdio"],
+      "extensions": [".ts", ".tsx", ".js", ".jsx"],
+      "languages": ["typescript", "javascript"],
+      "enabled": false
+    },
+    "c_cpp": {
+      "command": "clangd",
+      "args": [],
+      "extensions": [".c", ".cpp", ".h", ".hpp"],
+      "languages": ["c", "cpp"],
+      "enabled": false
+    }
+  }
+}

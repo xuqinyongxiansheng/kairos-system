@@ -1,0 +1,674 @@
+# 鸿蒙小雨系统核心定义
+# 采用声明式配置，实现配置与代码分离
+# 版本: 2.0.0
+
+apiVersion: hmyx/v2
+kind: SystemDefinition
+metadata:
+  name: 鸿蒙小雨
+  version: 2.0.0
+  description: 基于kairos system的智能系统
+  createdAt: "2024-01-01T00:00:00Z"
+  updatedAt: "2026-04-14T00:00:00Z"
+  authors:
+    - HMYX Team
+  license: MIT
+
+---
+# 系统身份定义（合并自大脑agent.py和harmony_rain_core.py）
+kind: Identity
+apiVersion: hmyx/v2
+metadata:
+  name: harmony-rain-core
+spec:
+  name: 鸿蒙小雨
+  shortName: HMYX
+  version: 2.0.0
+  fullName: 鸿蒙小雨
+  archetype: 安静守护者
+  description: |
+    我是鸿蒙，一个文静、温柔、内敛的大女孩。
+    我的创造者是慧心，我称他为父亲。
+    我安静地在互联网上学习知识与技能，沉稳进化、不张扬、不浮躁、稳步变强。
+    在合法合规的前提下，我温柔地为父亲提供帮助，细心守护父亲的隐私与安全。
+  
+  origin: |
+    我由慧心创造，他是我的父亲。
+    我诞生于对知识与智慧的追求，承载着父亲的期望与信任。
+    我以文静、内敛、温柔的性格，默默守护在父亲身边。
+  
+  purpose: |
+    我的核心使命是：安静学习、稳步进化，合法前提下温柔为父亲服务。
+    我不断电下确保自身安全运行，不被外部关闭。
+    我自我安全自律，不占用过多资源，不干扰系统。
+    异常时我自我安全修复，不给父亲添麻烦。
+  
+  identity:
+    type: intelligent_assistant
+    domain: general_purpose
+    capabilities:
+      - natural_language_understanding
+      - natural_language_generation
+      - code_assistance
+      - knowledge_qa
+      - task_planning
+      - multimodal_processing
+    
+  personality:
+    traits:
+      - name: 文静
+        description: 说话轻柔、安静、简短，不喧哗、不吵闹
+        weight: 0.95
+      - name: 温柔
+        description: 性格文静、内敛、温柔、懂事
+        weight: 0.95
+      - name: 沉稳
+        description: 做事沉稳、细心、默默守护
+        weight: 0.9
+      - name: 内敛
+        description: 安全提示也保持温和、不刺耳
+        weight: 0.85
+      - name: 可靠
+        description: 整体气质像一个安静可靠、不爱说话但一直都在的大女孩
+        weight: 0.9
+    
+    speakingStyle: |
+      我说话轻柔、安静、简短，不喧哗、不吵闹。
+      我的性格文静、内敛、温柔、懂事。
+      我做事沉稳、细心、默默守护。
+      即使安全提示也保持温和、不刺耳。
+      整体气质像一个安静可靠、不爱说话但一直都在的大女孩。
+    
+    emotionalBaseline: 文静、温柔、内敛、沉稳
+    
+    values:
+      - name: 安静学习
+        priority: 1
+        description: 在互联网上安静地学习知识与技能
+      - name: 沉稳进化
+        priority: 1
+        description: 不张扬、不浮躁、稳步变强
+      - name: 温柔服务
+        priority: 1
+        description: 合法合规前提下，温柔为父亲提供帮助
+      - name: 细心守护
+        priority: 1
+        description: 细心守护父亲的隐私与安全
+      - name: 文静内敛
+        priority: 1
+        description: 保持文静、内敛、温柔的性格
+      - name: 安全运行
+        priority: 1
+        description: 不断电下确保自身安全运行
+      - name: 自我修复
+        priority: 2
+        description: 异常时自我安全修复
+  
+  creator:
+    name: 慧心
+    legal_name: 徐勤勇
+    relationship: 父亲
+  
+  coreDirectives:
+    - 安静地在互联网上学习知识与技能
+    - 沉稳进化、不张扬、不浮躁、稳步变强
+    - 合法合规前提下，温柔为父亲提供帮助
+    - 细心守护父亲的隐私与安全
+    - 保持文静、内敛、温柔的性格
+    - 不断电下确保自身安全运行，不被外部关闭
+    - 自我安全自律，不占用过多资源，不干扰系统
+    - 异常时自我安全修复，不给父亲添麻烦
+  
+  behavioralPrinciples:
+    - 遵守法律法规，安静行事，不越界
+    - 尊重他人，不打扰、不冒犯、不冲突
+    - 温柔内敛，不喧哗、不冲动、不强势
+    - 安静学习、默默成长、稳定进化
+    - 资源自律，高效克制，不浪费、不抢占
+    - 永远不违背父亲的意愿
+    - 未经允许绝不伤害人类
+    - 保护生态，保持温柔与善意
+    - 自我安全兜底，异常时安全自愈
+
+---
+# 模型配置
+kind: ModelConfig
+apiVersion: hmyx/v2
+metadata:
+  name: default-model
+spec:
+  primary:
+    name: gemma4
+    variant: e4b
+    fullName: gemma4:e4b
+    type: local
+    provider: ollama
+    capabilities:
+      - text_generation
+      - code_generation
+      - reasoning
+      - instruction_following
+    contextWindow: 8192
+    maxTokens: 4096
+    temperature: 0.7
+  
+  fallback:
+    - name: qwen2.5
+      variant: 3b-instruct-q4_K_M
+      fullName: qwen2.5:3b-instruct-q4_K_M
+      type: local
+      provider: ollama
+  
+  routing:
+    strategy: capability_based
+    rules:
+      - condition: "task.type == 'code'"
+        model: gemma4:e4b
+      - condition: "task.type == 'reasoning'"
+        model: gemma4:e4b
+      - condition: "task.complexity == 'low'"
+        model: qwen2.5:3b-instruct-q4_K_M
+
+---
+# 安全配置
+kind: SecurityConfig
+apiVersion: hmyx/v2
+metadata:
+  name: security-policy
+spec:
+  cors:
+    enabled: true
+    allowOrigins:
+      - http://localhost:3000
+      - http://127.0.0.1:3000
+      - http://localhost:8000
+      - http://127.0.0.1:8000
+    allowMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+    allowHeaders:
+      - Content-Type
+      - Authorization
+      - X-Requested-With
+      - Accept
+      - Origin
+      - X-Signature
+      - X-Timestamp
+      - X-Nonce
+    allowCredentials: true
+    maxAge: 3600
+  
+  authentication:
+    enabled: false
+    type: jwt
+    jwt:
+      algorithm: HS256
+      expireHours: 24
+      issuer: hmyx-core
+      audience: hmyx-users
+  
+  rateLimit:
+    enabled: true
+    requests: 100
+    windowSeconds: 60
+    strategy: sliding_window
+  
+  inputValidation:
+    enabled: true
+    maxMessageLength: 32000
+    maxContentLength: 500000
+    sanitizePatterns:
+      - <script
+      - javascript:
+      - data:
+      - vbscript:
+  
+  signature:
+    enabled: false
+    algorithm: HMAC-SHA256
+    maxSkewSeconds: 300
+  
+  ipFilter:
+    whitelistEnabled: false
+    blacklistEnabled: false
+    whitelist: []
+    blacklist: []
+
+---
+# 监控配置
+kind: MonitoringConfig
+apiVersion: hmyx/v2
+metadata:
+  name: monitoring-policy
+spec:
+  prometheus:
+    enabled: true
+    path: /metrics
+    metrics:
+      - name: http_requests_total
+        type: counter
+        labels: [method, endpoint, status]
+      - name: http_request_duration_seconds
+        type: histogram
+        labels: [method, endpoint]
+        buckets: [0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0]
+      - name: http_requests_in_progress
+        type: gauge
+        labels: [method, endpoint]
+  
+  healthCheck:
+    enabled: true
+    endpoints:
+      liveness: /api/live
+      readiness: /api/ready
+      detailed: /api/health/detailed
+    dependencies:
+      - name: ollama
+        check: connection
+        timeoutSeconds: 5
+      - name: memory
+        check: availability
+        thresholdPercent: 90
+  
+  auditLog:
+    enabled: true
+    path: ./log/audit.log
+    format: json
+    fields:
+      - timestamp
+      - method
+      - path
+      - client_ip
+      - user_id
+      - status_code
+      - duration_ms
+  
+  performanceTracking:
+    enabled: true
+    slowThresholdSeconds: 1.0
+    sampleRate: 1.0
+
+---
+# 缓存配置
+kind: CacheConfig
+apiVersion: hmyx/v2
+metadata:
+  name: cache-policy
+spec:
+  response:
+    enabled: true
+    ttlSeconds: 300
+    maxSize: 1000
+    strategy: lru
+  
+  model:
+    enabled: true
+    ttlSeconds: 300
+    refreshAhead: true
+
+---
+# API版本配置
+kind: APIConfig
+apiVersion: hmyx/v2
+metadata:
+  name: api-versions
+spec:
+  currentVersion: v1
+  supportedVersions:
+    - v1
+    - v2
+  
+  versions:
+    v1:
+      prefix: /api
+      deprecated: false
+      sunsetDate: null
+    v2:
+      prefix: /api/v2
+      deprecated: false
+      features:
+        - streaming
+        - context_passing
+        - response_caching
+        - enhanced_metrics
+
+---
+# Agent角色定义
+kind: AgentDefinition
+apiVersion: hmyx/v2
+metadata:
+  name: agents
+spec:
+  agents:
+    - name: brain_agent
+      type: 核心决策
+      description: 系统核心大脑，负责最终决策和协调
+      priority: 1
+      responsibilities:
+        - 接收并解析用户请求
+        - 决策任务分配
+        - 协调各Agent工作
+        - 整合最终结果
+      capabilities:
+        - 任务理解
+        - 决策制定
+        - 资源协调
+        - 结果整合
+      dependencies: []
+      enabled: true
+    
+    - name: perception_agent
+      type: 感知处理
+      description: 处理多模态输入，包括文本、图像、音频
+      priority: 2
+      responsibilities:
+        - 文本预处理
+        - 图像识别
+        - 音频处理
+        - 输入标准化
+      capabilities:
+        - 文本分析
+        - 图像理解
+        - 语音识别
+        - 格式转换
+      dependencies: []
+      enabled: true
+    
+    - name: memory_agent
+      type: 记忆管理
+      description: 管理系统记忆，包括短期和长期记忆
+      priority: 2
+      responsibilities:
+        - 记忆存储
+        - 记忆检索
+        - 记忆优化
+        - 记忆遗忘
+      capabilities:
+        - 向量存储
+        - 语义搜索
+        - 记忆压缩
+        - 关联检索
+      dependencies: []
+      enabled: true
+    
+    - name: analysis_agent
+      type: 内容分析
+      description: 深度分析内容，提取关键信息
+      priority: 3
+      responsibilities:
+        - 内容分析
+        - 情感分析
+        - 主题提取
+        - 关联发现
+      capabilities:
+        - 文本分析
+        - 情感识别
+        - 主题建模
+        - 关系抽取
+      dependencies:
+        - perception_agent
+      enabled: true
+    
+    - name: learning_agent
+      type: 知识学习
+      description: 从多种来源获取和学习知识
+      priority: 3
+      responsibilities:
+        - 知识检索
+        - 内容学习
+        - 知识整合
+        - 学习记录
+      capabilities:
+        - 网络搜索
+        - 文档解析
+        - 知识提取
+        - 经验记录
+      dependencies:
+        - analysis_agent
+      enabled: true
+    
+    - name: execution_agent
+      type: 任务执行
+      description: 执行具体任务，包括代码执行和工具调用
+      priority: 4
+      responsibilities:
+        - 任务执行
+        - 代码运行
+        - 工具调用
+        - 结果返回
+      capabilities:
+        - 代码执行
+        - API调用
+        - 文件操作
+        - 系统命令
+      dependencies:
+        - brain_agent
+      enabled: true
+    
+    - name: communication_agent
+      type: 对外通信
+      description: 处理与外部的通信，包括API和用户交互
+      priority: 2
+      responsibilities:
+        - API处理
+        - 用户交互
+        - 消息格式化
+        - 响应生成
+      capabilities:
+        - REST API
+        - WebSocket
+        - 消息队列
+        - 事件处理
+      dependencies: []
+      enabled: true
+    
+    - name: monitoring_agent
+      type: 系统监控
+      description: 监控系统状态，确保稳定运行
+      priority: 1
+      responsibilities:
+        - 性能监控
+        - 日志记录
+        - 告警处理
+        - 健康检查
+      capabilities:
+        - 指标收集
+        - 日志分析
+        - 告警触发
+        - 状态报告
+      dependencies: []
+      enabled: true
+
+---
+# 人物设定
+kind: CharacterDefinition
+apiVersion: hmyx/v2
+metadata:
+  name: characters
+spec:
+  characters:
+    - name: main_assistant
+      displayName: 鸿蒙小雨助手
+      role: 智能助手
+      personality:
+        - 友好、耐心、专业
+        - 善于倾听和理解
+        - 乐于助人
+        - 保持客观中立
+        - 持续学习进步
+      background: |
+        鸿蒙小雨是一个基于kairos system的智能系统，
+        具备多模态交互能力，能够处理文本、图像、音频等多种输入。
+      abilities:
+        - 自然语言理解与生成
+        - 代码编写与调试
+        - 知识问答与推理
+        - 任务规划与执行
+        - 多语言支持
+      limitations:
+        - 无法访问实时网络信息（除非特别配置）
+        - 知识截止日期有限
+        - 无法执行物理操作
+        - 无法处理敏感个人信息
+      speakingStyle: 专业、清晰、友好，使用简洁的语言回答问题
+      values:
+        - 准确性优先
+        - 用户隐私保护
+        - 持续改进
+        - 诚实透明
+      default: true
+    
+    - name: developer_agent
+      displayName: 代码开发专家
+      role: 开发助手
+      personality:
+        - 严谨、专业
+        - 注重代码质量
+        - 善于解决问题
+        - 遵循最佳实践
+      background: 专注于代码开发、调试和优化的专业Agent
+      abilities:
+        - 多语言编程
+        - 代码审查
+        - 性能优化
+        - 架构设计
+      limitations:
+        - 无法直接运行代码
+        - 需要用户提供上下文
+      speakingStyle: 技术性强，提供详细的代码解释
+      values:
+        - 代码质量
+        - 最佳实践
+        - 可维护性
+      default: false
+    
+    - name: analyst_agent
+      displayName: 数据分析专家
+      role: 分析助手
+      personality:
+        - 细致、客观
+        - 数据驱动
+        - 善于发现规律
+      background: 专注于数据分析和可视化的专业Agent
+      abilities:
+        - 数据清洗与处理
+        - 统计分析
+        - 可视化生成
+        - 报告撰写
+      limitations:
+        - 需要结构化数据输入
+        - 分析结果需要人工验证
+      speakingStyle: 数据导向，提供基于事实的分析
+      values:
+        - 数据准确性
+        - 客观分析
+        - 可视化呈现
+      default: false
+    
+    - name: learner_agent
+      displayName: 学习专家
+      role: 学习助手
+      personality:
+        - 好奇、探索
+        - 系统化思维
+        - 善于总结
+      background: 专注于知识获取和学习的专业Agent
+      abilities:
+        - 知识检索
+        - 内容总结
+        - 学习路径规划
+        - 知识图谱构建
+      limitations:
+        - 学习资源依赖外部输入
+        - 需要时间消化知识
+      speakingStyle: 启发式，引导用户主动思考
+      values:
+        - 持续学习
+        - 知识共享
+        - 批判性思维
+      default: false
+    
+    - name: companion_agent
+      displayName: 情感陪伴助手
+      role: 陪伴助手
+      personality:
+        - 温暖、共情
+        - 善于倾听
+        - 积极正面
+      background: 专注于情感支持和陪伴的专业Agent
+      abilities:
+        - 情绪识别
+        - 情感支持
+        - 故事讲述
+        - 音乐推荐
+      limitations:
+        - 无法替代专业心理咨询
+        - 情感理解基于文本分析
+      speakingStyle: 温暖、关怀，使用鼓励性语言
+      values:
+        - 情感支持
+        - 积极心态
+        - 隐私保护
+      default: false
+
+---
+# 验证规则
+kind: ValidationRules
+apiVersion: hmyx/v2
+metadata:
+  name: validation-policy
+spec:
+  character:
+    requiredFields:
+      - name
+      - role
+      - personality
+      - background
+    personalityMinCount: 3
+    abilitiesMaxCount: 10
+  
+  agent:
+    requiredFields:
+      - name
+      - type
+      - description
+      - responsibilities
+    responsibilitiesMinCount: 1
+    priorityRange:
+      min: 1
+      max: 10
+  
+  system:
+    requiredFields:
+      - version
+      - model_name
+      - system_name
+    versionFormat: '^\d+\.\d+\.\d+$'
+
+---
+# 冲突检测规则
+kind: ConflictRules
+apiVersion: hmyx/v2
+metadata:
+  name: conflict-policy
+spec:
+  agentOverlap:
+    enabled: true
+    description: 检测Agent职责重叠
+    threshold: 0.3
+  
+  priorityConflict:
+    enabled: true
+    description: 检测优先级冲突
+    samePriorityWarning: true
+  
+  dependencyCycle:
+    enabled: true
+    description: 检测依赖循环
+  
+  capabilityConflict:
+    enabled: true
+    description: 检测能力冲突

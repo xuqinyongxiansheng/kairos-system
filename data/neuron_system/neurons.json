@@ -1,0 +1,55 @@
+{
+  "neuron_1776002904192_47c932db": {
+    "id": "neuron_1776002904192_47c932db",
+    "neuron_type": "sensory",
+    "name": "InputNeuron",
+    "threshold": 0.5,
+    "resting_potential": 0.0,
+    "current_potential": 0.0,
+    "refractory_period": 0.01,
+    "last_spike_time": 1776002904.2192879,
+    "spike_count": 1,
+    "connections_in": [],
+    "connections_out": [
+      "synapse_1776002904203_8479f5f1"
+    ],
+    "metadata": {},
+    "created_at": "2026-04-12T22:08:24.192740"
+  },
+  "neuron_1776002904195_8d44842c": {
+    "id": "neuron_1776002904195_8d44842c",
+    "neuron_type": "interneuron",
+    "name": "HiddenNeuron",
+    "threshold": 0.5,
+    "resting_potential": 0.0,
+    "current_potential": 1.0,
+    "refractory_period": 0.01,
+    "last_spike_time": 0.0,
+    "spike_count": 0,
+    "connections_in": [
+      "synapse_1776002904203_8479f5f1"
+    ],
+    "connections_out": [
+      "synapse_1776002904207_df7937d7"
+    ],
+    "metadata": {},
+    "created_at": "2026-04-12T22:08:24.195787"
+  },
+  "neuron_1776002904199_a9e92c2b": {
+    "id": "neuron_1776002904199_a9e92c2b",
+    "neuron_type": "motor",
+    "name": "OutputNeuron",
+    "threshold": 0.5,
+    "resting_potential": 0.0,
+    "current_potential": 0.0,
+    "refractory_period": 0.01,
+    "last_spike_time": 0.0,
+    "spike_count": 0,
+    "connections_in": [
+      "synapse_1776002904207_df7937d7"
+    ],
+    "connections_out": [],
+    "metadata": {},
+    "created_at": "2026-04-12T22:08:24.199567"
+  }
+}

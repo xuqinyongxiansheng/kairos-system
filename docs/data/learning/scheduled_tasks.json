@@ -1,0 +1,13 @@
+{
+  "tasks": [
+    {
+      "id": "task_2b5496b07dbc",
+      "prompt": "测试定时任务",
+      "cron_expression": "0 */1 * * *",
+      "interval_seconds": 3600,
+      "recurring": true,
+      "enabled": true,
+      "last_run": null
+    }
+  ]
+}

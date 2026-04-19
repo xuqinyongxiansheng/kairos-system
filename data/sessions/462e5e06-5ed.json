@@ -1,0 +1,18 @@
+{
+  "id": "462e5e06-5ed",
+  "title": "协同测试",
+  "created_at": 1776292883.2170775,
+  "updated_at": 1776292883.2177303,
+  "messages": [
+    {
+      "id": "c1e3650e",
+      "role": "user",
+      "content": "测试协同",
+      "parent_id": null,
+      "timestamp": 1776292883.2177286,
+      "metadata": {}
+    }
+  ],
+  "model": "gemma4:e4b",
+  "metadata": {}
+}

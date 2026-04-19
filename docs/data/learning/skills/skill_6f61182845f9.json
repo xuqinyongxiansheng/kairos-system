@@ -1,0 +1,24 @@
+{
+  "id": "skill_6f61182845f9",
+  "name": "测试技能",
+  "description": "这是一个测试技能",
+  "trigger_patterns": [
+    "测试任务"
+  ],
+  "steps": [
+    {
+      "name": "Step 1",
+      "action": "测试任务",
+      "success_criteria": "任务成功完成"
+    }
+  ],
+  "allowed_tools": [
+    "test_tool"
+  ],
+  "arguments": [],
+  "context": "inline",
+  "success_rate": 1.0,
+  "usage_count": 1,
+  "version": "1.0.0",
+  "created_from": "session_conversion"
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "entry_id": "mem_1776302184424_8c32d118",
+    "key": "test_key",
+    "content": "E2E团队记忆测试数据",
+    "content_hash": "9aa4b0e14dad8f5197d2cd71d173b49efb29f5153ff4b8b66b6252fb6fa1254a",
+    "author": {
+      "agent_id": "system",
+      "agent_type": "system"
+    },
+    "version": 1,
+    "timestamp": 1776302184.424629,
+    "visibility": "team",
+    "tags": [
+      "e2e"
+    ],
+    "merge_strategy": "last_write_wins",
+    "parent_version": 0
+  }
+]

@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鸿蒙小雨 v4.0 - Claude Code 风格</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #101322;
+            --bg-secondary: #0d1117;
+            --bg-tertiary: #161b22;
+            --bg-hover: #1c2333;
+            --bg-active: #21262d;
+            --text-primary: #e2e8f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent: #6366f1;
+            --accent-hover: #818cf8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --border: #1e293b;
+            --border-light: #30363d;
+            --shadow: rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== 顶部标题栏 ===== */
+        .titlebar {
+            height: 36px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            -webkit-app-region: drag;
+            user-select: none;
+        }
+        .titlebar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .app-icon {
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(135deg, var(--accent), var(--success));
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .app-title {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .titlebar-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 2px;
+        }
+        .window-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .window-btn.close { background: #ff5f57; }
+        .window-btn.minimize { background: #febc2e; }
+        .window-btn.maximize { background: #28c840; }
+        .titlebar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--success);
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ===== 工具栏 ===== */
+        .toolbar {
+            height: 42px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            gap: 4px;
+        }
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            padding: 0 8px;
+            border-right: 1px solid var(--border);
+        }
+        .toolbar-group:last-child {
+            border-right: none;
+            margin-left: auto;
+        }
+        .toolbar-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.15s;
+        }
+        .toolbar-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+        .toolbar-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+        .toolbar-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--border);
+            margin: 0 4px;
+        }
+        .model-selector {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 11px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* ===== 主内容区（三栏布局）===== */
+        .main-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* ===== 左侧边栏 ===== */
+        .sidebar-left {
+            width: 260px;
+            min-width: 200px;
+            max-width: 400px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            resize: horizontal;
+            overflow: hidden;
+        }
+        .sidebar-header {
+            height: 38px;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .sidebar-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-tertiary);
+        }
+        .sidebar-tab {
+            flex: 1;
+            padding: 8px 0;
+            text-align: center;
+            font-size: 11px;
+            cursor: pointer;
+            color: var(--text-muted);
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+        .sidebar-tab:hover {
+            color: var(--text-secondary);
+            background: var(--bg-hover);
+        }
+        .sidebar-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+        .sidebar-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar-content::-webkit-scrollbar-thumb {
+            background: var(--border-light);
+            border-radius: 3px;
+        }
+
+        /* 会话列表 */
+        .session-list {
+            list-style: none;
+        }
+        .session-item {
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.15s;
+        }
+        .session-item:hover {
+            background: var(--bg-hover);
+        }
+        .session-item.active {
+            background: var(--bg-active);
+            border-left: 3px solid var(--accent);
+        }
+        .session-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, var(--accent), #a855f7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .session-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .session-title {
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .session-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .new-session-btn {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-tertiary);
+            border: 1px dashed var(--border-light);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 8px;
+            transition: all 0.15s;
+        }
+        .new-session-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* 文件树 */
+        .file-tree {
+            list-style: none;
+        }
+        .tree-item {
+            padding: 5px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            transition: all 0.1s;
+        }
+        .tree-item:hover {
+            background: var(--bg-hover);
+        }
+        .tree-folder > .tree-children {
+            margin-left: 16px;
+            display: none;
+        }
+        .tree-folder.open > .tree-children {
+            display: block;
+        }
+        .tree-icon {
+            font-size: 12px;
+            width: 16px;
+            text-align: center;
+        }
+        .tree-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ===== 中间工作区 ===== */
+        .workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 400px;
+            background: var(--bg-primary);
+        }
+        .workspace-tabs {
+            height: 38px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-end;
+            padding: 0 8px;
+            overflow-x: auto;
+        }
+        .workspace-tab {
+            padding: 8px 16px;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            transition: all 0.15s;
+        }
+        .workspace-tab:hover {
+            color: var(--text-secondary);
+            background: var(--bg-hover);
+        }
+        .workspace-tab.active {
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            border-color: var(--border);
+        }
+        .tab-close {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            font-size: 10px;
+        }
+        .workspace-tab:hover .tab-close {
+            opacity: 1;
+        }
+        .tab-close:hover {
+            background: var(--error);
+            color: white;
+        }
+        .editor-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .editor-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .line-numbers {
+            counter-reset: line;
+            padding-right: 20px;
+            user-select: none;
+        }
+        .code-line {
+            display: flex;
+            min-height: 22px;
+        }
+        .line-no {
+            width: 40px;
+            text-align: right;
+            padding-right: 16px;
+            color: var(--text-muted);
+            font-size: 12px;
+            user-select: none;
+            flex-shrink: 0;
+        }
+        .line-content {
+            flex: 1;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        /* 欢迎页面 */
+        .welcome-view {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 60px;
+            text-align: center;
+        }
+        .welcome-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent), var(--success));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: 24px;
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
+        }
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .welcome-subtitle {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 40px;
+        }
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            max-width: 600px;
+            width: 100%;
+        }
+        .quick-action-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .quick-action-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+        .quick-action-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .quick-action-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .quick-action-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* 终端面板 */
+        .terminal-panel {
+            height: 200px;
+            min-height: 120px;
+            max-height: 60%;
+            border-top: 1px solid var(--border);
+            background: #0c0c0c;
+            display: flex;
+            flex-direction: column;
+            resize: vertical;
+        }
+        .terminal-header {
+            height: 30px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+            gap: 12px;
+        }
+        .terminal-tabs {
+            display: flex;
+            gap: 2px;
+        }
+        .terminal-tab {
+            padding: 4px 12px;
+            cursor: pointer;
+            border-radius: 4px 4px 0 0;
+            font-size: 11px;
+        }
+        .terminal-tab.active {
+            background: #0c0c0c;
+            color: var(--text-primary);
+        }
+        .terminal-body {
+            flex: 1;
+            padding: 10px 14px;
+            font-family: "Fira Code", "Consolas", monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-y: auto;
+            color: #d4d4d4;
+        }
+        .terminal-line {
+            margin-bottom: 2px;
+        }
+        .terminal-prompt {
+            color: var(--success);
+        }
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+        }
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #d4d4d4;
+            font-family: inherit;
+            font-size: inherit;
+            caret-color: var(--success);
+        }
+
+        /* ===== 右侧AI面板 ===== */
+        .ai-panel {
+            width: 420px;
+            min-width: 300px;
+            max-width: 600px;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            resize: horizontal;
+            overflow: hidden;
+        }
+        .ai-panel-header {
+            height: 48px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+        }
+        .ai-panel-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .ai-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent), var(--success));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .ai-status {
+            font-size: 11px;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .ai-panel-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .ai-action-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.15s;
+        }
+        .ai-action-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        /* AI聊天消息区 */
+        .ai-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .ai-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .ai-messages::-webkit-scrollbar-thumb {
+            background: var(--border-light);
+            border-radius: 3px;
+        }
+        .message-row {
+            display: flex;
+            gap: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .message-avatar.user {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+        }
+        .message-avatar.assistant {
+            background: linear-gradient(135deg, var(--accent), var(--success));
+        }
+        .message-body {
+            flex: 1;
+            min-width: 0;
+        }
+        .message-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .message-sender {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .message-time {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .message-content {
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 13px;
+            line-height: 1.65;
+            word-wrap: break-word;
+        }
+        .message-row.user .message-content {
+            background: var(--bg-active);
+            border: 1px solid var(--border-light);
+        }
+        .message-row.assistant .message-content {
+            background: var(--bg-tertiary);
+        }
+        .message-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .message-row:hover .message-actions {
+            opacity: 1;
+        }
+        .msg-action-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .msg-action-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* 代码块样式 */
+        .code-block {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .code-block-header {
+            background: var(--bg-tertiary);
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+        .code-lang {
+            color: var(--accent);
+            font-weight: 500;
+        }
+        .code-copy-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .code-copy-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+        .code-block pre {
+            padding: 12px 14px;
+            font-family: "Fira Code", "Consolas", monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 0;
+        }
+
+        /* 打字指示器 */
+        .typing-message {
+            display: flex;
+            gap: 12px;
+        }
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+            padding: 14px 16px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+        }
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: typingBounce 1.4s ease-in-out infinite;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-8px); opacity: 1; }
+        }
+
+        /* AI输入区 */
+        .ai-input-area {
+            padding: 14px 16px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-tertiary);
+        }
+        .ai-input-wrapper {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 10px 14px;
+            transition: border-color 0.2s;
+        }
+        .ai-input-wrapper:focus-within {
+            border-color: var(--accent);
+        }
+        .ai-textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-size: 14px;
+            resize: none;
+            min-height: 24px;
+            max-height: 150px;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+        .ai-textarea::placeholder {
+            color: var(--text-muted);
+        }
+        .ai-input-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+        .ai-input-hints {
+            display: flex;
+            gap: 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .ai-send-btn {
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 7px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .ai-send-btn:hover {
+            background: var(--accent-hover);
+            transform: scale(1.02);
+        }
+        .ai-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== 底部状态栏 ===== */
+        .statusbar {
+            height: 26px;
+            background: var(--bg-tertiary);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .statusbar-left, .statusbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: default;
+        }
+        .status-item.clickable {
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .status-item.clickable:hover {
+            background: var(--bg-hover);
+            color: var(--text-secondary);
+        }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .sidebar-left { width: 200px; min-width: 150px; }
+            .ai-panel { width: 320px; min-width: 250px; }
+        }
+        @media (max-width: 768px) {
+            .sidebar-left { display: none; }
+            .ai-panel { width: 280px; min-width: 200px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 标题栏 -->
+    <div class="titlebar">
+        <div class="titlebar-left">
+            <div class="app-icon">雨</div>
+            <span class="app-title">鸿蒙小雨 v4.0</span>
+        </div>
+        <div class="titlebar-center">
+            <div class="window-btn close"></div>
+            <div class="window-btn minimize"></div>
+            <div class="window-btn maximize"></div>
+        </div>
+        <div class="titlebar-right">
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span>Ollama 已连接</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 工具栏 -->
+    <div class="toolbar">
+        <div class="toolbar-group">
+            <button class="toolbar-btn" onclick="createNewSession()" title="新建会话">📄 新建</button>
+            <button class="toolbar-btn" onclick="saveSession()" title="保存会话">💾 保存</button>
+        </div>
+        <div class="toolbar-group">
+            <button class="toolbar-btn" onclick="toggleTerminal()" title="切换终端">⌨️ 终端</button>
+            <button class="toolbar-btn" title="搜索">🔍 搜索</button>
+            <button class="toolbar-btn" title="Git">📂 Git</button>
+        </div>
+        <div class="toolbar-group">
+            <select class="model-selector" id="modelSelector" onchange="changeModel(this.value)">
+                <option value="gemma4:e4b">gemma4:e4b</option>
+                <option value="gemma3:e4b">gemma3:e4b</option>
+            </select>
+            <button class="toolbar-btn active" onclick="toggleAiPanel()" title="AI助手面板">🤖 AI 助手</button>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="main-container">
+        <!-- 左侧边栏 -->
+        <div class="sidebar-left" id="sidebarLeft">
+            <div class="sidebar-header">
+                <span>EXPLORER</span>
+            </div>
+            <div class="sidebar-tabs">
+                <div class="sidebar-tab active" onclick="switchSidebarTab(this, 'sessions')">💬 会话</div>
+                <div class="sidebar-tab" onclick="switchSidebarTab(this, 'files')">📁 文件</div>
+            </div>
+            <div class="sidebar-content">
+                <!-- 会话标签页内容 -->
+                <div id="sessionsPanel">
+                    <ul class="session-list" id="sessionList"></ul>
+                    <button class="new-session-btn" onclick="createNewSession()">
+                        <span>＋</span> 新建对话
+                    </button>
+                </div>
+                <!-- 文件标签页内容 -->
+                <div id="filesPanel" style="display:none;">
+                    <ul class="file-tree" id="fileTree"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 中间工作区 -->
+        <div class="workspace" id="workspace">
+            <div class="workspace-tabs" id="workspaceTabs"></div>
+            <div class="editor-area">
+                <div class="editor-content" id="editorContent">
+                    <div class="welcome-view" id="welcomeView">
+                        <div class="welcome-logo">雨</div>
+                        <h1 class="welcome-title">鸿蒙小雨</h1>
+                        <p class="welcome-subtitle">基于本地大模型的智能开发助手 · Claude Code 风格界面</p>
+                        <div class="quick-actions-grid">
+                            <div class="quick-action-card" onclick="sendQuickMessage('帮我写一个Python快速排序函数')">
+                                <div class="quick-action-icon">💻</div>
+                                <div class="quick-action-title">代码编写</div>
+                                <div class="quick-action-desc">让我帮你写代码</div>
+                            </div>
+                            <div class="quick-action-card" onclick="sendQuickMessage('解释一下什么是机器学习')">
+                                <div class="quick-action-icon">📚</div>
+                                <div class="quick-action-title">知识问答</div>
+                                <div class="quick-action-desc">解答你的疑问</div>
+                            </div>
+                            <div class="quick-action-card" onclick="sendQuickMessage('分析这段代码的优化空间')">
+                                <div class="quick-action-icon">🔍</div>
+                                <div class="quick-action-title">代码分析</div>
+                                <div class="quick-action-desc">优化你的代码</div>
+                            </div>
+                            <div class="quick-action-card" onclick="sendQuickMessage('用中文写一首关于人工智能的诗')">
+                                <div class="quick-action-icon">✨</div>
+                                <div class="quick-action-title">创意写作</div>
+                                <div class="quick-action-desc">激发你的灵感</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 终端面板 -->
+            <div class="terminal-panel" id="terminalPanel" style="display:none;">
+                <div class="terminal-header">
+                    <span>终端</span>
+                    <div class="terminal-tabs">
+                        <span class="terminal-tab active">bash</span>
+                        <span class="terminal-tab">问题</span>
+                        <span class="terminal-tab">输出</span>
+                    </div>
+                    <div style="margin-left:auto;display:flex;gap:8px;">
+                        <span style="cursor:pointer;" onclick="clearTerminal()">清屏</span>
+                        <span style="cursor:pointer;" onclick="toggleTerminal()">✕</span>
+                    </div>
+                </div>
+                <div class="terminal-body" id="terminalBody">
+                    <div class="terminal-line"><span class="terminal-prompt">$</span> 鸿蒙小雨终端已就绪</div>
+                    <div class="terminal-line"><span class="terminal-prompt">$</span> 模型: gemma4:e4b | 端口: 8000</div>
+                    <div class="terminal-input-line">
+                        <span class="terminal-prompt">$</span>
+                        <input type="text" class="terminal-input" id="terminalInput" placeholder="输入命令..." onkeydown="handleTerminalInput(event)">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧AI面板 -->
+        <div class="ai-panel" id="aiPanel">
+            <div class="ai-panel-header">
+                <div class="ai-panel-title">
+                    <div class="ai-avatar">🤖</div>
+                    <span>AI 助手</span>
+                    <span class="ai-status"><span class="status-dot"></span>在线</span>
+                </div>
+                <div class="ai-panel-actions">
+                    <button class="ai-action-btn" onclick="clearChat()" title="清空对话">🗑️</button>
+                    <button class="ai-action-btn" onclick="exportChat()" title="导出对话">📥</button>
+                    <button class="ai-action-btn" onclick="toggleAiPanel()" title="关闭面板">✕</button>
+                </div>
+            </div>
+            <div class="ai-messages" id="aiMessages">
+                <div class="message-row assistant">
+                    <div class="message-avatar assistant">🤖</div>
+                    <div class="message-body">
+                        <div class="message-meta">
+                            <span class="message-sender">鸿蒙小雨</span>
+                            <span class="message-time">现在</span>
+                        </div>
+                        <div class="message-content">
+                            你好！我是鸿蒙小雨，基于本地大模型 Gemma4 的智能开发助手。<br><br>
+                            我可以帮你：<br>
+                            • 编写和调试代码<br>
+                            • 解答技术问题<br>
+                            • 分析和优化代码<br>
+                            • 创意写作与翻译<br><br>
+                            有什么我可以帮你的吗？
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-input-area">
+                <div class="ai-input-wrapper">
+                    <textarea 
+                        class="ai-textarea" 
+                        id="aiInput"
+                        placeholder="输入消息... (Enter 发送, Shift+Enter 换行)"
+                        rows="1"
+                        onkeydown="handleAiInput(event)"
+                        oninput="autoResizeAiInput(this)"
+                    ></textarea>
+                    <div class="ai-input-footer">
+                        <div class="ai-input-hints">
+                            <span>Enter 发送</span>
+                            <span>Shift+Enter 换行</span>
+                        </div>
+                        <button class="ai-send-btn" id="aiSendBtn" onclick="sendAiMessage()">
+                            发送 ➤
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 状态栏 -->
+    <div class="statusbar">
+        <div class="statusbar-left">
+            <div class="status-item clickable">
+                <span>🧠</span> main
+            </div>
+            <div class="status-item clickable">
+                <span>↻</span> 0 ⚠ 0
+            </div>
+            <div class="status-item">
+                <span id="statusPosition">行 1, 列 1</span>
+            </div>
+        </div>
+        <div class="statusbar-right">
+            <div class="status-item">
+                <span id="statusModel">gemma4:e4b</span>
+            </div>
+            <div class="status-item">
+                <span id="statusMessages">💬 0 条消息</span>
+            </div>
+            <div class="status-item">
+                <span id="statusTokens">📊 0 tokens</span>
+            </div>
+            <div class="status-item clickable">
+                <span>UTF-8</span>
+            </div>
+            <div class="status-item clickable">
+                <span>Python</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        let messages = [];
+        let isLoading = false;
+        let totalTokens = 0;
+        let messageCount = 0;
+        let currentModel = 'gemma4:e4b';
+        let sessions = [];
+        let currentSessionId = null;
+
+        // ========== 初始化 ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSessions();
+            renderFileTree();
+            document.getElementById('aiInput').focus();
+        });
+
+        // ========== 侧边栏标签切换 ==========
+        function switchSidebarTab(el, panelId) {
+            document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('sessionsPanel').style.display = panelId === 'sessions' ? 'block' : 'none';
+            document.getElementById('filesPanel').style.display = panelId === 'files' ? 'block' : 'none';
+        }
+
+        // ========== 会话管理 ==========
+        function loadSessions() {
+            sessions = JSON.parse(localStorage.getItem('hmyx_sessions') || '[]');
+            if (sessions.length === 0) {
+                createNewSession(true);
+            } else {
+                renderSessions();
+            }
+        }
+
+        function createNewSession(silent = false) {
+            const session = {
+                id: Date.now().toString(),
+                title: '新对话 ' + (sessions.length + 1),
+                messages: [],
+                createdAt: new Date().toISOString(),
+                model: currentModel
+            };
+            sessions.unshift(session);
+            if (sessions.length > 20) sessions.pop();
+            localStorage.setItem('hmyx_sessions', JSON.stringify(sessions));
+            currentSessionId = session.id;
+            messages = [];
+            messageCount = 0;
+            updateStatusMessages();
+            renderSessions();
+            clearAiMessages();
+            if (!silent) addSystemMessage('新会话已创建');
+        }
+
+        function switchSession(sessionId) {
+            currentSessionId = sessionId;
+            const session = sessions.find(s => s.id === sessionId);
+            if (session) {
+                messages = session.messages || [];
+                messageCount = messages.length;
+                currentModel = session.model || 'gemma4:e4b';
+                document.getElementById('modelSelector').value = currentModel;
+                renderAiMessages();
+                renderSessions();
+                updateStatusMessages();
+            }
+        }
+
+        function saveSession() {
+            if (!currentSessionId) return;
+            const session = sessions.find(s => s.id === currentSessionId);
+            if (session) {
+                session.messages = [...messages];
+                session.model = currentModel;
+                if (messages.length > 0 && messages[messages.length - 1].role === 'user') {
+                    session.title = messages[messages.length - 1].content.substring(0, 30) + '...';
+                }
+                localStorage.setItem('hmyx_sessions', JSON.stringify(sessions));
+                renderSessions();
+                addSystemMessage('会话已保存');
+            }
+        }
+
+        function deleteSession(sessionId, event) {
+            event.stopPropagation();
+            sessions = sessions.filter(s => s.id !== sessionId);
+            localStorage.setItem('hmyx_sessions', JSON.stringify(sessions));
+            if (currentSessionId === sessionId) {
+                if (sessions.length > 0) {
+                    switchSession(sessions[0].id);
+                } else {
+                    createNewSession();
+                }
+            }
+            renderSessions();
+        }
+
+        function renderSessions() {
+            const list = document.getElementById('sessionList');
+            list.innerHTML = sessions.map(s => `
+                <li class="session-item ${s.id === currentSessionId ? 'active' : ''}" onclick="switchSession('${s.id}')">
+                    <div class="session-icon">💬</div>
+                    <div class="session-info">
+                        <div class="session-title">${escapeHtml(s.title)}</div>
+                        <div class="session-meta">${formatTime(s.createdAt)} · ${(s.messages||[]).length}条消息</div>
+                    </div>
+                    <button onclick="deleteSession('${s.id}', event)" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:4px;">✕</button>
+                </li>
+            `).join('');
+        }
+
+        // ========== 文件树 ==========
+        function renderFileTree() {
+            const tree = document.getElementById('fileTree');
+            const files = [
+                { name: 'project', type: 'folder', children: [
+                    { name: 'main.py', type: 'file' },
+                    { name: 'routers', type: 'folder', children: [
+                        { name: 'chat.py', type: 'file' },
+                        { name: 'services.py', type: 'file' },
+                        { name: 'health.py', type: 'file' },
+                    ]},
+                    { name: 'system', type: 'folder', children: [
+                        { name: 'hmyx_core.py', type: 'file' },
+                        { name: 'gemma4_brain.py', type: 'file' },
+                    ]},
+                    { name: 'static', type: 'folder', children: [
+                        { name: 'chat.html', type: 'file' },
+                    ]},
+                    { name: 'cli_chat.py', type: 'file' },
+                    { name: 'agents', type: 'folder', children: [
+                        { name: 'coordinator.py', type: 'file' },
+                        { name: 'brain_agent.py', type: 'file' },
+                    ]},
+                ]}
+            ];
+            tree.innerHTML = buildTree(files);
+        }
+
+        function buildTree(items, level = 0) {
+            return items.map(item => {
+                if (item.type === 'folder') {
+                    return `<li class="tree-item tree-folder open">
+                        <span class="tree-icon" onclick="toggleFolder(this)">▼</span>
+                        <span class="tree-icon">📁</span>
+                        <span class="tree-name">${item.name}</span>
+                        <ul class="tree-children">${buildTree(item.children || [], level + 1)}</ul>
+                    </li>`;
+                }
+                const icon = getFileIcon(item.name);
+                return `<li class="tree-item">
+                    <span class="tree-icon">${icon}</span>
+                    <span class="tree-name">${item.name}</span>
+                </li>`;
+            }).join('');
+        }
+
+        function getFileIcon(name) {
+            const ext = name.split('.').pop();
+            const icons = { py: '🐍', js: '📜', html: '🌐', css: '🎨', json: '📋', md: '📝' };
+            return icons[ext] || '📄';
+        }
+
+        function toggleFolder(el) {
+            el.parentElement.classList.toggle('open');
+            el.textContent = el.parentElement.classList.contains('open') ? '▼' : '▶';
+        }
+
+        // ========== AI消息处理 ==========
+        function addAiMessage(content, role, isHtml = false) {
+            const container = document.getElementById('aiMessages');
+            const welcome = container.querySelector('.message-row.assistant:first-child');
+            if (welcome && messages.length > 0) welcome.style.display = 'none';
+
+            const time = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+            const avatar = role === 'user' ? '👤' : '🤖';
+            
+            const row = document.createElement('div');
+            row.className = `message-row ${role}`;
+            row.innerHTML = `
+                <div class="message-avatar ${role}">${avatar}</div>
+                <div class="message-body">
+                    <div class="message-meta">
+                        <span class="message-sender">${role === 'user' ? '你' : '鸿蒙小雨'}</span>
+                        <span class="message-time">${time}</span>
+                    </div>
+                    <div class="message-content">${isHtml ? content : escapeHtml(content)}</div>
+                    <div class="message-actions">
+                        <button class="msg-action-btn" onclick="copyMessage(this)">复制</button>
+                        ${role === 'assistant' ? '<button class="msg-action-btn" onclick="reGenerate(this)">重新生成</button>' : ''}
+                    </div>
+                </div>
+            `;
+            container.appendChild(row);
+            container.scrollTop = container.scrollHeight;
+
+            if (role === 'user' || role === 'assistant') {
+                messageCount++;
+                updateStatusMessages();
+            }
+            return row;
+        }
+
+        function addTypingIndicator() {
+            const container = document.getElementById('aiMessages');
+            const indicator = document.createElement('div');
+            indicator.className = 'typing-message';
+            indicator.id = 'typingIndicator';
+            indicator.innerHTML = `
+                <div class="message-avatar assistant">🤖</div>
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            container.appendChild(indicator);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const el = document.getElementById('typingIndicator');
+            if (el) el.remove();
+        }
+
+        function addSystemMessage(text) {
+            const container = document.getElementById('aiMessages');
+            const div = document.createElement('div');
+            div.style.cssText = 'text-align:center;color:var(--text-muted);font-size:11px;padding:8px;';
+            div.textContent = `● ${text}`;
+            container.appendChild(div);
+            setTimeout(() => div.style.opacity = '0.5', 2000);
+        }
+
+        function clearAiMessages() {
+            const container = document.getElementById('aiMessages');
+            container.innerHTML = `
+                <div class="message-row assistant">
+                    <div class="message-avatar assistant">🤖</div>
+                    <div class="message-body">
+                        <div class="message-meta">
+                            <span class="message-sender">鸿蒙小雨</span>
+                            <span class="message-time">现在</span>
+                        </div>
+                        <div class="message-content">
+                            你好！我是鸿蒙小雨，基于本地大模型 Gemma4 的智能开发助手。<br><br>
+                            我可以帮你：<br>
+                            • 编写和调试代码<br>
+                            • 解答技术问题<br>
+                            • 分析和优化代码<br>
+                            • 创意写作与翻译<br><br>
+                            有什么我可以帮你的吗？
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAiMessages() {
+            clearAiMessages();
+            messages.forEach(m => {
+                if (m.role === 'user') {
+                    addAiMessage(m.content, 'user');
+                } else if (m.role === 'assistant') {
+                    addAiMessage(formatResponse(m.content), 'assistant', true);
+                }
+            });
+        }
+
+        function formatResponse(text) {
+            text = text.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
+                return `<div class="code-block">
+                    <div class="code-block-header">
+                        <span class="code-lang">${lang || 'code'}</span>
+                        <button class="code-copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                    <pre>${escapeHtml(code.trim())}</pre>
+                </div>`;
+            });
+            text = text.replace(/`([^`]+)`/g, '<code style="background:#1e293b;padding:2px 6px;border-radius:4px;">$1</code>');
+            text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+            text = text.replace(/\n/g, '<br>');
+            return text;
+        }
+
+        async function sendAiMessage() {
+            const input = document.getElementById('aiInput');
+            const sendBtn = document.getElementById('aiSendBtn');
+            const content = input.value.trim();
+
+            if (!content || isLoading) return;
+
+            isLoading = true;
+            sendBtn.disabled = true;
+            input.value = '';
+            autoResizeAiInput(input);
+
+            addAiMessage(content, 'user');
+            messages.push({ role: 'user', content });
+            addTypingIndicator();
+
+            try {
+                const history = messages.slice(0, -1).map(m => ({
+                    role: m.role,
+                    content: m.content
+                }));
+
+                const response = await fetch(`${API_BASE}/api/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: content,
+                        model: currentModel,
+                        history: history.length > 0 ? history : null
+                    })
+                });
+
+                removeTypingIndicator();
+
+                if (!response.ok) {
+                    const errData = await response.json();
+                    throw new Error(errData.detail || `HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                const assistantContent = data.response || data.message || data.content || '无响应';
+
+                addAiMessage(formatResponse(assistantContent), 'assistant', true);
+                messages.push({ role: 'assistant', content: assistantContent });
+
+                if (data.total_tokens) {
+                    totalTokens += data.total_tokens;
+                    document.getElementById('statusTokens').textContent = `📊 ${totalTokens} tokens`;
+                }
+
+                autoSaveSession();
+            } catch (error) {
+                removeTypingIndicator();
+                addAiMessage(`❌ 请求失败: ${error.message}`, 'assistant');
+            } finally {
+                isLoading = false;
+                sendBtn.disabled = false;
+                input.focus();
+            }
+        }
+
+        function sendQuickMessage(text) {
+            document.getElementById('aiInput').value = text;
+            sendAiMessage();
+        }
+
+        function handleAiInput(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendAiMessage();
+            }
+        }
+
+        function autoResizeAiInput(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
+        }
+
+        // ========== 功能按钮 ==========
+        function clearChat() {
+            messages = [];
+            messageCount = 0;
+            totalTokens = 0;
+            clearAiMessages();
+            updateStatusMessages();
+            document.getElementById('statusTokens').textContent = '📊 0 tokens';
+            addSystemMessage('对话已清空');
+        }
+
+        function exportChat() {
+            const data = {
+                exportTime: new Date().toISOString(),
+                model: currentModel,
+                messageCount: messages.length,
+                messages: messages
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `hmyx-chat-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            addSystemMessage('对话已导出');
+        }
+
+        function copyMessage(btn) {
+            const content = btn.closest('.message-body').querySelector('.message-content').textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                btn.textContent = '已复制!';
+                setTimeout(() => btn.textContent = '复制', 1500);
+            });
+        }
+
+        function copyCode(btn) {
+            const code = btn.closest('.code-block').querySelector('pre').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.textContent = '已复制!';
+                setTimeout(() => btn.textContent = '复制', 1500);
+            });
+        }
+
+        function reGenerate(btn) {
+            const idx = Array.from(btn.closest('.ai-messages').querySelectorAll('.message-row')).indexOf(btn.closest('.message-row'));
+            if (idx > 0 && messages[idx - 1] && messages[idx - 1].role === 'user') {
+                const userMsg = messages[idx - 1].content;
+                messages = messages.slice(0, idx - 1);
+                document.getElementById('aiInput').value = userMsg;
+                sendAiMessage();
+            }
+        }
+
+        function changeModel(model) {
+            currentModel = model;
+            document.getElementById('statusModel').textContent = model;
+            addSystemMessage(`模型已切换至: ${model}`);
+        }
+
+        function toggleAiPanel() {
+            const panel = document.getElementById('aiPanel');
+            panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        function toggleTerminal() {
+            const terminal = document.getElementById('terminalPanel');
+            terminal.style.display = terminal.style.display === 'none' ? 'flex' : 'none';
+            if (terminal.style.display === 'flex') {
+                document.getElementById('terminalInput').focus();
+            }
+        }
+
+        function autoSaveSession() {
+            if (!currentSessionId) return;
+            const session = sessions.find(s => s.id === currentSessionId);
+            if (session) {
+                session.messages = [...messages];
+                session.model = currentModel;
+                if (messages.length > 0) {
+                    const lastMsg = messages[messages.length - 1];
+                    if (lastMsg.role === 'user') {
+                        session.title = lastMsg.content.substring(0, 30) + (lastMsg.content.length > 30 ? '...' : '');
+                    }
+                }
+                localStorage.setItem('hmyx_sessions', JSON.stringify(sessions));
+                renderSessions();
+            }
+        }
+
+        // ========== 终端 ==========
+        let terminalHistory = [];
+        let terminalHistoryIndex = -1;
+
+        function handleTerminalInput(event) {
+            if (event.key === 'Enter') {
+                const input = document.getElementById('terminalInput');
+                const cmd = input.value.trim();
+                if (!cmd) return;
+
+                addTerminalLine(`<span class="terminal-prompt">$</span> ${escapeHtml(cmd)}`);
+                
+                if (cmd.toLowerCase() === 'clear') {
+                    clearTerminal();
+                } else if (cmd.toLowerCase() === 'help') {
+                    addTerminalLine('可用命令: help, clear, status, model, chat "消息"');
+                } else if (cmd.toLowerCase() === 'status') {
+                    addTerminalLine(`状态: 在线 | 模型: ${currentModel} | 消息数: ${messageCount} | Tokens: ${totalTokens}`);
+                } else if (cmd.toLowerCase().startsWith('chat ')) {
+                    const msg = cmd.substring(5).trim();
+                    document.getElementById('aiInput').value = msg;
+                    sendAiMessage();
+                    addTerminalLine(`已发送到AI: "${msg}"`);
+                } else if (cmd.startsWith('/')) {
+                    document.getElementById('aiInput').value = cmd;
+                    sendAiMessage();
+                } else {
+                    addTerminalLine(`命令未识别: ${cmd}. 输入 help 查看帮助`);
+                }
+
+                terminalHistory.push(cmd);
+                terminalHistoryIndex = terminalHistory.length;
+                input.value = '';
+            } else if (event.key === 'ArrowUp') {
+                if (terminalHistoryIndex > 0) {
+                    terminalHistoryIndex--;
+                    document.getElementById('terminalInput').value = terminalHistory[terminalHistoryIndex];
+                }
+                event.preventDefault();
+            } else if (event.key === 'ArrowDown') {
+                if (terminalHistoryIndex < terminalHistory.length - 1) {
+                    terminalHistoryIndex++;
+                    document.getElementById('terminalInput').value = terminalHistory[terminalHistoryIndex];
+                } else {
+                    terminalHistoryIndex = terminalHistory.length;
+                    document.getElementById('terminalInput').value = '';
+                }
+                event.preventDefault();
+            }
+        }
+
+        function addTerminalLine(html) {
+            const body = document.getElementById('terminalBody');
+            const inputLine = body.querySelector('.terminal-input-line');
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = html;
+            body.insertBefore(line, inputLine);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function clearTerminal() {
+            const body = document.getElementById('terminalBody');
+            const inputLine = body.querySelector('.terminal-input-line');
+            body.innerHTML = '';
+            body.appendChild(inputLine);
+            addTerminalLine('<span class="terminal-prompt">$</span> 终端已清空');
+        }
+
+        // ========== 状态更新 ==========
+        function updateStatusMessages() {
+            document.getElementById('statusMessages').textContent = `💬 ${messageCount} 条消息`;
+        }
+
+        // ========== 工具函数 ==========
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatTime(isoString) {
+            const d = new Date(isoString);
+            const now = new Date();
+            const diff = now - d;
+            if (diff < 60000) return '刚刚';
+            if (diff < 3600000) return Math.floor(diff / 60000) + '分钟前';
+            if (diff < 86400000) return Math.floor(diff / 3600000) + '小时前';
+            return d.toLocaleDateString('zh-CN');
+        }
+    </script>
+</body>
+</html>

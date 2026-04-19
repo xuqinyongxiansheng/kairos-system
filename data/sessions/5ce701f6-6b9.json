@@ -1,0 +1,9 @@
+{
+  "id": "5ce701f6-6b9",
+  "title": "测试会话",
+  "created_at": 1776295490.2886703,
+  "updated_at": 1776295490.2886708,
+  "messages": [],
+  "model": "gemma4:e4b",
+  "metadata": {}
+}

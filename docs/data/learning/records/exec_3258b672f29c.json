@@ -1,0 +1,14 @@
+{
+  "id": "exec_3258b672f29c",
+  "task": "测试任务",
+  "result": "测试结果",
+  "success": true,
+  "duration": 0.0,
+  "tools_used": [
+    "test_tool"
+  ],
+  "errors": [],
+  "feedback": null,
+  "timestamp": "2026-04-13T00:57:23.501828+00:00",
+  "memory_entries": []
+}

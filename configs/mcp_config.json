@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
+      "enabled": false,
+      "description": "文件系统 MCP 服务器（需手动启用）"
+    },
+    "memory": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "enabled": false,
+      "description": "记忆 MCP 服务器（需手动启用）"
+    }
+  }
+}

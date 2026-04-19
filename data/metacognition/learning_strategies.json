@@ -1,0 +1,47 @@
+{
+  "spaced_repetition": {
+    "strategy_type": "spaced_repetition",
+    "parameters": {
+      "initial_interval": 1,
+      "multiplier": 2,
+      "max_interval": 30,
+      "min_interval": 1
+    },
+    "effectiveness_score": 0.85,
+    "last_updated": "2026-04-12T21:39:31.742686"
+  },
+  "active_recall": {
+    "strategy_type": "active_recall",
+    "parameters": {
+      "recall_frequency": "daily",
+      "question_generation": "auto",
+      "difficulty_adjustment": true
+    },
+    "effectiveness_score": 0.82,
+    "last_updated": "2026-04-12T21:39:31.742697"
+  },
+  "feedback_loop": {
+    "strategy_type": "feedback_loop",
+    "parameters": {
+      "feedback_frequency": "continuous",
+      "adjustment_threshold": 0.7,
+      "optimization_cycles": 5
+    },
+    "effectiveness_score": 0.78,
+    "last_updated": "2026-04-12T21:39:31.742701"
+  },
+  "metacognitive_monitoring": {
+    "strategy_type": "metacognitive_monitoring",
+    "parameters": {
+      "monitoring_frequency": "session",
+      "reflection_triggers": [
+        "failure",
+        "success",
+        "threshold"
+      ],
+      "self_assessment_period": "weekly"
+    },
+    "effectiveness_score": 0.8,
+    "last_updated": "2026-04-12T21:39:31.742704"
+  }
+}

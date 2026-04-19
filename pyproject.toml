@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kairos-system"
+version = "4.1.0"
+description = "Kairos System - 智能集成系统核心"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [
+    {name = "Kairos Team", email = "team@kairos.dev"}
+]
+keywords = ["ai", "llm", "ollama", "fastapi", "cognitive-system"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: FastAPI",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "ollama>=0.6.0",
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0.0",
+    "psutil>=5.9.0",
+    "requests>=2.28.0",
+    "httpx>=0.24.0",
+    "schedule>=1.2.0",
+    "pyttsx3>=2.90",
+    "Pillow>=10.0.0",
+    "numpy>=1.24.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "python-dotenv>=1.0.0",
+    "PyJWT>=2.8.0",
+    "prometheus-client>=0.17.0",
+    "PyYAML>=6.0.0",
+    "pywin32>=306; sys_platform == 'win32'",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+    "ruff>=0.5.0",
+    "mypy>=1.11.0",
+    "coverage>=7.0.0",
+    "pre-commit>=3.0.0",
+    "bandit>=1.7.0",
+]
+
+[project.scripts]
+kairos = "kairos.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py311"
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]
+line-length = 120
+src = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"
+
+[tool.mypy]
+python_version = "3.11"
+strict = false

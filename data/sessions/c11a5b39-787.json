@@ -1,0 +1,18 @@
+{
+  "id": "c11a5b39-787",
+  "title": "协同测试",
+  "created_at": 1776292687.9378943,
+  "updated_at": 1776292687.9385703,
+  "messages": [
+    {
+      "id": "fcc9abd2",
+      "role": "user",
+      "content": "测试协同",
+      "parent_id": null,
+      "timestamp": 1776292687.938568,
+      "metadata": {}
+    }
+  ],
+  "model": "gemma4:e4b",
+  "metadata": {}
+}
