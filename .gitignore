@@ -104,12 +104,8 @@ Desktop.ini
 *.zip
 *.tar.gz
 
-# Frontend
-frontend/node_modules/
-frontend/.next/
-frontend/dist/
-frontend/bun.exe
-frontend/bin/
+# Web frontend (static)
+static/node_modules/
 
 # Temporary files
 *.tmp
