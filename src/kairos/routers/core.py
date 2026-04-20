@@ -26,7 +26,7 @@ async def core_info():
         "debug": settings.server.debug,
         "timestamp": time.time()
     }
-    return ApiResponse.success(data=data, message="获取核心信息成功")
+    return ApiResponse.ok(data=data, message="获取核心信息成功")
 
 @router.get("/performance")
 async def performance_metrics():
@@ -52,7 +52,7 @@ async def performance_metrics():
             },
             "timestamp": time.time()
         }
-        return ApiResponse.success(data=data, message="获取性能指标成功")
+        return ApiResponse.ok(data=data, message="获取性能指标成功")
     except Exception as e:
         return ApiResponse.server_error(message=f"获取性能指标失败: {str(e)}")
 
@@ -67,7 +67,7 @@ async def refresh_models():
             "count": len(models) if models else 0,
             "timestamp": time.time()
         }
-        return ApiResponse.success(data=data, message="刷新模型列表成功")
+        return ApiResponse.ok(data=data, message="刷新模型列表成功")
     except Exception as e:
         return ApiResponse.server_error(message=f"刷新模型失败: {str(e)}")
 
@@ -86,4 +86,4 @@ async def versions():
         },
         "timestamp": time.time()
     }
-    return ApiResponse.success(data=data, message="获取版本信息成功")
+    return ApiResponse.ok(data=data, message="获取版本信息成功")

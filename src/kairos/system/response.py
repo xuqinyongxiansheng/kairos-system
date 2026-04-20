@@ -17,9 +17,9 @@ class ApiResponse(BaseModel, Generic[T]):
     error: Optional[Dict[str, Any]] = None
     timestamp: float
     request_id: Optional[str] = None
-    
+
     @classmethod
-    def success(cls, data: Optional[T] = None, message: str = "操作成功") -> 'ApiResponse[T]':
+    def ok(cls, data: Optional[T] = None, message: str = "操作成功") -> 'ApiResponse[T]':
         """成功响应"""
         return cls(
             success=True,
@@ -28,9 +28,9 @@ class ApiResponse(BaseModel, Generic[T]):
             error=None,
             timestamp=time.time()
         )
-    
+
     @classmethod
-    def error(cls, message: str, error: Optional[Dict[str, Any]] = None) -> 'ApiResponse[None]':
+    def fail(cls, message: str, error: Optional[Dict[str, Any]] = None) -> 'ApiResponse[None]':
         """错误响应"""
         return cls(
             success=False,
@@ -39,7 +39,7 @@ class ApiResponse(BaseModel, Generic[T]):
             error=error or {"message": message},
             timestamp=time.time()
         )
-    
+
     @classmethod
     def validation_error(cls, message: str, errors: Optional[Dict[str, Any]] = None) -> 'ApiResponse[None]':
         """验证错误响应"""
@@ -47,10 +47,10 @@ class ApiResponse(BaseModel, Generic[T]):
             success=False,
             message=message,
             data=None,
-            error={"type": "validation_error", "errors": errors or {}}, 
+            error={"type": "validation_error", "errors": errors or {}},
             timestamp=time.time()
         )
-    
+
     @classmethod
     def server_error(cls, message: str = "服务器内部错误", error: Optional[Dict[str, Any]] = None) -> 'ApiResponse[None]':
         """服务器错误响应"""
@@ -61,7 +61,7 @@ class ApiResponse(BaseModel, Generic[T]):
             error=error or {"type": "server_error"},
             timestamp=time.time()
         )
-    
+
     @classmethod
     def not_found(cls, message: str = "资源不存在") -> 'ApiResponse[None]':
         """资源不存在响应"""
@@ -72,7 +72,7 @@ class ApiResponse(BaseModel, Generic[T]):
             error={"type": "not_found"},
             timestamp=time.time()
         )
-    
+
     @classmethod
     def unauthorized(cls, message: str = "未授权访问") -> 'ApiResponse[None]':
         """未授权响应"""
@@ -83,7 +83,7 @@ class ApiResponse(BaseModel, Generic[T]):
             error={"type": "unauthorized"},
             timestamp=time.time()
         )
-    
+
     @classmethod
     def forbidden(cls, message: str = "访问被禁止") -> 'ApiResponse[None]':
         """禁止访问响应"""
